@@ -72,14 +72,14 @@ public class SearchActivity extends Activity {
 	public void onImageSearch (View v){
 		imageResults.clear();
 		imageAdapter.clear();
-		findAdditionalImages(0);
+		findAdditionalImages(0); //run inititial index
 	}
 	
-	public void findAdditionalImages (int page){
+	public void findAdditionalImages (int index){
 		String query = etQuery.getText().toString();
 		AsyncHttpClient client = new AsyncHttpClient();
 		client.get("https://ajax.googleapis.com/ajax/services/search/images?rsz=8&" +
-                "start=" + page + "&v=1.0"+getSettingFields()+"&q=" + Uri.encode(query), 
+                "start=" + index + "&v=1.0"+getSettingFields()+"&q=" + Uri.encode(query), 
                 new JsonHttpResponseHandler(){
 					public void onSuccess(JSONObject response){
 						JSONArray imageJsonResults = null;
@@ -88,9 +88,10 @@ public class SearchActivity extends Activity {
 									"responseData").getJSONArray("results");
 							imageAdapter.addAll(ImageResult
 									.fromJSONArray(imageJsonResults));
-							//imageResults.clear();
 							Log.d("DEBUG", imageResults.toString());
 						} catch (JSONException e) {
+							//Dummy image added to reset EndlessScrollListener - exception hit on page 9
+							imageAdapter.add(new ImageResult(new JSONObject()));
 							e.printStackTrace();
 						}
 					}
