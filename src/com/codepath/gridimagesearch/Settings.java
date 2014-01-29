@@ -29,14 +29,23 @@ public class Settings implements Serializable {
 	}
 	
 	public String getItemSize(){
+		if (itemSize.equals("-----")){
+			return "";
+		}
 		return itemSize;
 	}
 	
 	public String getColorFilter(){
+		if (colorFilter.equals("-----")){
+			return "";
+		}
 		return colorFilter;
 	}
 	
 	public String getItemType(){
+		if (itemType.equals("-----")){
+			return "";
+		}
 		return itemType;
 	}
 	
